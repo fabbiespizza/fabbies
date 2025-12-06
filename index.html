@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fabbies Pizza - Best Pizza in Pakistan</title>
+    <link rel="icon" type="image/png" href="https://i.postimg.cc/3r9fp7nY/FB-logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    
+    <style>
+        /* --- GLOBAL RESETS & TYPOGRAPHY --- */
+        :root {
+            --primary-color: #e74c3c;
+            --dark-color: #2c3e50;
+            --light-bg: #f9f9f9;
+            --text-color: #333;
+            --header-height: 70px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding-top: var(--header-height); /* Prevent content jumping */
+        }
+
+        /* --- HEADER LAYOUT ENHANCEMENTS --- */
+        #header {
+            background: #ffffff;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 10px 20px;
+            gap: 20px;
+        }
+
+        /* --- LOGO --- */
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 45px;
+            width: auto;
+            border-radius: 50%;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--dark-color);
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text span {
+            color: var(--primary-color);
+        }
+
+        /* --- SEARCH BAR (Center) --- */
+        .search-wrapper {
+            flex-grow: 1;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: #f1f2f6;
+            border-radius: 50px;
+            padding: 0 5px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar:focus-within {
+            background: #fff;
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.15);
+        }
+
+        .search-bar input {
+            border: none;
+            background: transparent;
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 1rem;
+            outline: none;
+            color: var(--text-color);
+        }
+
+        .search-bar button {
+            background: var(--primary-color);
+            border: none;
+            color: white;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            margin-right: 4px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-bar button:hover {
+            transform: scale(1.1);
+        }
+
+        /* --- SEARCH DROPDOWN (Fixed Scrolling) --- */
+        .search-suggestions {
+            position: absolute;
+            top: 120%;
+            left: 0;
+            width: 100%;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            display: none;
+            z-index: 1001;
+            overflow-y: auto; /* Enable internal scrolling */
+            max-height: 60vh; /* Prevent it from going off-screen */
+            border: 1px solid #eee;
+            scrollbar-width: thin;
+        }
+
+        .search-suggestions::-webkit-scrollbar {
+            width: 6px;
+        }
+        .search-suggestions::-webkit-scrollbar-thumb {
+            background-color: #ccc;
+            border-radius: 3px;
+        }
+
+        .search-suggestions.active {
+            display: block;
+            animation: slideDown 0.2s ease forwards;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .suggestion-group { padding: 10px; }
+        
+        .suggestion-header {
+            font-size: 0.75rem;
+            color: #999;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 8px 15px;
+            letter-spacing: 1px;
+        }
+
+        .suggestion-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            cursor: pointer;
+            transition: background 0.2s;
+            color: var(--dark-color);
+            font-weight: 500;
+            border-bottom: 1px solid #f9f9f9;
+        }
+
+        .suggestion-item:last-child { border-bottom: none; }
+        .suggestion-item:hover { background-color: #fff0f0; color: var(--primary-color); }
+        .suggestion-item i { color: #aaa; width: 20px; text-align: center; }
+        .suggestion-item:hover i { color: var(--primary-color); }
+
+        /* --- HEADER ACTIONS (Right Aligned) --- */
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-shrink: 0;
+        }
+
+        /* Desktop Nav Links */
+        .nav-links-desktop {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--dark-color); /* WCAG AA Contrast Compliant */
+            font-weight: 600;
+            font-size: 1rem;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover { color: var(--primary-color); }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--primary-color);
+            transition: width 0.3s;
+        }
+        
+        .nav-link:hover::after { width: 100%; }
+
+        /* Icon Buttons */
+        .icon-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--dark-color);
+            cursor: pointer;
+            position: relative;
+            padding: 5px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-btn:hover { color: var(--primary-color); transform: translateY(-2px); }
+
+        /* Cart Badge */
+        .cart-badge {
+            position: absolute;
+            top: -5px;
+            right: -8px;
+            background: var(--primary-color);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: bold;
+            height: 18px;
+            min-width: 18px;
+            padding: 0 4px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #fff;
+        }
+
+        /* Profile Icon (Circle style) */
+        .profile-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #f1f2f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark-color);
+            text-decoration: none;
+            border: 1px solid #ddd;
+        }
+        
+        .profile-btn:hover {
+            background: var(--dark-color);
+            color: #fff;
+            border-color: var(--dark-color);
+        }
+
+        /* Hamburger (Mobile Only) */
+        .hamburger-btn {
+            display: none; /* Hidden on Desktop */
+            font-size: 1.4rem;
+        }
+
+        /* --- HERO CONTRAST FIX --- */
+        .hero-overlay {
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.7)); /* Better contrast for white text */
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1;
+        }
+
+        .hero-content {
+            z-index: 2;
+            position: relative;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5); /* Text readability */
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 992px) {
+            .nav-links-desktop { display: none; }
+            .hamburger-btn { display: block; }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-wrap: wrap;
+                gap: 10px;
+                padding-bottom: 10px;
+            }
+            
+            .logo-text { font-size: 1.2rem; }
+
+            .search-wrapper {
+                order: 3; /* Push to bottom row */
+                width: 100%;
+                max-width: 100%;
+                margin-top: 5px;
+            }
+            
+            .header-actions {
+                margin-left: auto; /* Push to right */
+                gap: 15px;
+            }
+            
+            :root { --header-height: 120px; } /* Adjust body padding */
+        }
+
+        /* Highlight Logic */
+        .highlight-item {
+            animation: flashHighlight 1.5s ease;
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 0 15px rgba(231, 76, 60, 0.4);
+        }
+        @keyframes flashHighlight {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <header id="header">
+        <div class="header-container">
+            <a href="#home" class="logo">
+                <img src="https://raw.githubusercontent.com/fabbiespizza/fabbies-pizza/main/images/logo.jpg" alt="Fabbies Pizza Logo">
+                <div class="logo-text">Fabbies <span>Pizza</span></div>
+            </a>
+
+            <div class="search-wrapper">
+                <div class="search-bar">
+                    <input type="text" id="menu-search-input" placeholder="Search menu..." autocomplete="off" aria-label="Search">
+                    <button id="search-btn" aria-label="Search Button"><i class="fas fa-search"></i></button>
+                </div>
+                <div class="search-suggestions" id="search-results">
+                    <div id="trending-section">
+                        <div class="suggestion-header"><i class="fas fa-fire"></i> Trending Now</div>
+                        <div class="suggestion-item" onclick="scrollToItem('Chicken Tikka Pizza')">
+                            <i class="fas fa-pizza-slice"></i> Chicken Tikka Pizza
+                        </div>
+                        <div class="suggestion-item" onclick="scrollToItem('Zinger Burger')">
+                            <i class="fas fa-hamburger"></i> Zinger Burger
+                        </div>
+                        <div class="suggestion-item" onclick="scrollToItem('Tong Twister Pasta')">
+                            <i class="fas fa-layer-group"></i> Tong Twister Pasta
+                        </div>
+                    </div>
+                    <div id="results-list" style="display:none;"></div>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <nav class="nav-links-desktop" aria-label="Desktop Navigation">
+                    <a href="#home" class="nav-link">Home</a>
+                    <a href="#menu" class="nav-link">Menu</a>
+                    <a href="#offers" class="nav-link">Offers</a>
+                    <a href="#contact" class="nav-link">Contact</a>
+                </nav>
+
+                <a href="login.html" class="profile-btn" aria-label="User Profile">
+                    <i class="far fa-user"></i>
+                </a>
+
+                <button class="icon-btn" id="cart-btn" aria-label="View Cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-badge" id="cart-count">0</span>
+                </button>
+
+                <button class="icon-btn hamburger-btn" id="mobile-menu-btn" aria-label="Toggle Mobile Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <nav class="nav-links" id="nav-links" style="display: none; background: white; border-top: 1px solid #eee;">
+            <a href="#home" class="nav-item" style="display:block; padding:15px; border-bottom:1px solid #eee; text-decoration:none; color:#333;">Home</a>
+            <a href="#menu" class="nav-item" style="display:block; padding:15px; border-bottom:1px solid #eee; text-decoration:none; color:#333;">Menu</a>
+            <a href="#offers" class="nav-item" style="display:block; padding:15px; border-bottom:1px solid #eee; text-decoration:none; color:#333;">Offers</a>
+            <a href="#contact" class="nav-item" style="display:block; padding:15px; border-bottom:1px solid #eee; text-decoration:none; color:#333;">Contact</a>
+        </nav>
+    </header>
+
+    <div style="height: 20px;"></div>
+
+    <section class="hero" id="home">
+        <div class="hero-slideshow">
+            <div class="hero-slide active" style="background-image: url('https://images.unsplash.com/photo-1565299624946-b28f40a0ae38');"></div>
+            <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1568901346375-23c9450c58cd');"></div>
+            <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1546069901-ba9599a7e63c');"></div>
+            <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1513104890138-7c749659a591');"></div>
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title" style="color: white;">Delicious Pizza in Pakistan</h1>
+            <p class="hero-subtitle" style="color: #f1f1f1;">Authentic flavors made with premium halal ingredients</p>
+            <div class="hero-buttons">
+                <a href="#menu" class="btn btn-primary">Order Now</a>
+                <a href="#offers" class="btn btn-outline" style="background: rgba(255,255,255,0.1); color: white; border-color: white;">View Offers</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="menu-section" id="menu">
+        <div class="section-container">
+            <div class="section-title">
+                <h2>Our Delicious Menu</h2>
+            </div>
+            <div class="menu-categories">
+                <button class="category-btn active" data-category="all">All Items</button>
+                <button class="category-btn" data-category="pizza">Pizza</button>
+                <button class="category-btn" data-category="burger">Burgers</button>
+                <button class="category-btn" data-category="pasta">Pasta</button>
+                <button class="category-btn" data-category="sides">Sides</button>
+            </div>
+            <div class="menu-items">
+                <div class="menu-item" data-category="pizza">
+                    <div class="item-badge">Popular</div>
+                    <div class="item-image-container">
+                        <img src="https://raw.githubusercontent.com/fabbiespizza/fabbies-pizza/main/images/Malai Boti.jpg" alt="Malai Boti Pizza" class="item-image" loading="lazy">
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-title">Malai Boti Pizza</h3>
+                        <p class="item-description">Tender chicken pieces marinated in creamy malai spices with mozzarella cheese</p>
+                        <div class="price-size">
+                            <span class="item-price">Small: Rs. 800</span>
+                            <span class="item-price">Medium: Rs. 1200</span>
+                            <span class="item-price">Large: Rs. 1600</span>
+                        </div>
+                        <div class="item-actions">
+                            <select class="size-selector">
+                                <option value="small">Small</option>
+                                <option value="medium">Medium</option>
+                                <option value="large">Large</option>
+                            </select>
+                            <button class="add-to-cart" data-item="Malai Boti Pizza">
+                                <i class="fas fa-plus"></i> Add
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-item" data-category="pizza">
+                    <div class="item-image-container">
+                        <img src="https://raw.githubusercontent.com/fabbiespizza/fabbies-pizza/main/images/Pizza.jpg" alt="Chicken Tikka Pizza" class="item-image" loading="lazy">
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-title">Chicken Tikka Pizza</h3>
+                        <p class="item-description">Spicy chicken tikka pieces with traditional Pakistani flavors and cheese</p>
+                        <div class="price-size">
+                            <span class="item-price">Small: Rs. 750</span>
+                            <span class="item-price">Medium: Rs. 1100</span>
+                            <span class="item-price">Large: Rs. 1500</span>
+                        </div>
+                        <div class="item-actions">
+                            <select class="size-selector">
+                                <option value="small">Small</option>
+                                <option value="medium">Medium</option>
+                                <option value="large">Large</option>
+                            </select>
+                            <button class="add-to-cart" data-item="Chicken Tikka Pizza">
+                                <i class="fas fa-plus"></i> Add
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-item" data-category="pizza">
+                    <div class="item-badge">New</div>
+                    <div class="item-image-container">
+                        <img src="https://raw.githubusercontent.com/fabbiespizza/fabbies-pizza/main/images/Pizzaa.jpg" alt="Chicken Fajita Pizza" class="item-image" loading="lazy">
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-title">Chicken Fajita Pizza</h3>
+                        <p class="item-description">Spicy fajita chicken with bell peppers, onions and mozzarella cheese</p>
+                        <div class="price-size">
+                            <span class="item-price">Small: Rs. 850</span>
+                            <span class="item-price">Medium: Rs. 1250</span>
+                            <span class="item-price">Large: Rs. 1700</span>
+                        </div>
+                        <div class="item-actions">
+                            <select class="size-selector">
+                                <option value="small">Small</option>
+                                <option value="medium">Medium</option>
+                                <option value="large">Large</option>
+                            </select>
+                            <button class="add-to-cart" data-item="Chicken Fajita Pizza">
+                                <i class="fas fa-plus"></i> Add
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-item" data-category="burger">
+                    <div class="item-badge">Bestseller</div>
+                    <div class="item-image-container">
+                        <img src="https://raw.githubusercontent.com/fabbiespizza/fabbies-pizza/main/images/Burger1.jpg" alt="Zinger Burger" class="item-image" loading="lazy">
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-title">Zinger Burger</h3>
+                        <p class="item-description">Crispy chicken fillet with special sauce, lettuce and fresh veggies</p>
+                        <p class="item-price">Rs. 350</p>
+                        <div class="item-actions">
+                            <button class="add-to-cart" data-item="Zinger Burger" data-price="350">
+                                <i class="fas fa-plus"></i> Add
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-item" data-category="burger">
+                    <div class="item-image-container">
+                        <img src="https://raw.githubusercontent.com/fabbiespizza/fabbies-pizza/main/images/Burger o.jpg" alt="Double Cheese Burger" class="item-image" loading="lazy">
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-title">Double Cheese Burger</h3>
+                        <p class="item-description">Two beef patties with double cheese, special sauce and fresh veggies</p>
+                        <p class="item-price">Rs. 450</p>
+                        <div class="item-actions">
+                            <button class="add-to-cart" data-item="Double Cheese Burger" data-price="450">
+                                <i class="fas fa-plus"></i> Add
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-item" data-category="pasta">
+                    <div class="item-image-container">
+                        <img src="https://raw.githubusercontent.com/fabbiespizza/fabbies-pizza/main/images/Flam Pasta.jpg" alt="White Sauce Pasta" class="item-image" loading="lazy">
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-title">White Sauce Pasta</h3>
+                        <p class="item-description">Creamy white sauce pasta with chicken and mushrooms</p>
+                        <p class="item-price">Rs. 500</p>
+                        <div class="item-actions">
+                            <button class="add-to-cart" data-item="White Sauce Pasta" data-price="500">
+                                <i class="fas fa-plus"></i> Add
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-item" data-category="pasta">
+                    <div class="item-image-container">
+                        <img src="https://raw.githubusercontent.com/fabbiespizza/fabbies-pizza/main/images/Pasta.jpg" alt="Tong Twister Pasta" class="item-image" loading="lazy">
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-title">Tong Twister Pasta</h3>
+                        <p class="item-description">Delicious pasta with rich sauce and tender chicken</p>
+                        <p class="item-price">Rs. 749</p>
+                        <div class="item-actions">
+                            <button class="add-to-cart" data-item="Tong Twister Pasta" data-price="749">
+                                <i class="fas fa-plus"></i> Add
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-item" data-category="sides">
+                    <div class="item-image-container">
+                        <img src="https://raw.githubusercontent.com/fabbiespizza/fabbies-pizza/main/images/Nuggets.jpg" alt="Chicken Nuggets" class="item-image" loading="lazy">
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-title">Chicken Nuggets (6 pcs)</h3>
+                        <p class="item-description">Crispy chicken nuggets served with your choice of dipping sauce</p>
+                        <p class="item-price">Rs. 300</p>
+                        <div class="item-actions">
+                            <button class="add-to-cart" data-item="Chicken Nuggets (6 pcs)" data-price="300">
+                                <i class="fas fa-plus"></i> Add
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-item" data-category="sides">
+                    <div class="item-image-container">
+                        <img src="https://raw.githubusercontent.com/fabbiespizza/fabbies-pizza/main/images/Fries.jpg" alt="French Fries" class="item-image" loading="lazy">
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-title">French Fries</h3>
+                        <p class="item-description">Golden crispy fries with a sprinkle of salt</p>
+                        <p class="item-price">Rs. 200</p>
+                        <div class="item-actions">
+                            <button class="add-to-cart" data-item="French Fries" data-price="200">
+                                <i class="fas fa-plus"></i> Add
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="offers-section" id="offers">
+        <div class="offer-bg"></div>
+        <div class="offer-container">
+            <div class="section-title">
+                <h2 style="color: white;">Special Offers</h2>
+            </div>
+            <div class="offer-cards">
+                <div class="offer-card">
+                    <img src="https://raw.githubusercontent.com/fabbiespizza/fabbies-pizza/main/images/Family deal.jpg" alt="Family Deal" class="offer-image" loading="lazy">
+                    <div class="offer-details">
+                        <span class="offer-tag">Save 21%</span>
+                        <h3 class="offer-title">Family Deal</h3>
+                        <p class="offer-description">2 Large Pizzas + 1.5L Drink + Garlic Bread + Chicken Nuggets</p>
+                        <p class="offer-price">Rs. 2799 <span style="text-decoration: line-through; color: #777; font-size: 1rem;">Rs. 3399</span></p>
+                        <button class="add-to-cart" data-item="Family Deal" data-price="2799" style="width: 100%;">
+                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+                <div class="offer-card">
+                    <img src="https://raw.githubusercontent.com/fabbiespizza/fabbies-pizza/main/images/Combo Deal.jpg" alt="Combo Meal" class="offer-image" loading="lazy">
+                    <div class="offer-details">
+                        <span class="offer-tag">Save 15%</span>
+                        <h3 class="offer-title">Combo Meal</h3>
+                        <p class="offer-description">1 Medium Pizza + 2 Zinger Burgers + Fries + 1L Drink</p>
+                        <p class="offer-price">Rs. 1899 <span style="text-decoration: line-through; color: #777; font-size: 1rem;">Rs. 2199</span></p>
+                        <button class="add-to-cart" data-item="Combo Meal" data-price="1899" style="width: 100%;">
+                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+                <div class="offer-card">
+                    <img src="https://raw.githubusercontent.com/fabbiespizza/fabbies-pizza/main/images/Weekend deal.jpg" alt="Weekend Special" class="offer-image" loading="lazy">
+                    <div class="offer-details">
+                        <span class="offer-tag">Weekend Only</span>
+                        <h3 class="offer-title">Weekend Special</h3>
+                        <p class="offer-description">1 Large Pizza + Pasta + Garlic Bread + 1.5L Drink</p>
+                        <p class="offer-price">Rs. 2299 <span style="text-decoration: line-through; color: #777; font-size: 1rem;">Rs. 2699</span></p>
+                        <button class="add-to-cart" data-item="Weekend Special" data-price="2299" style="width: 100%;">
+                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-section" id="about">
+        <div class="section-container">
+            <div class="about-container">
+                <div class="about-content">
+                    <h2>About Fabbies Pizza</h2>
+                    <p>Fabbies Pizza is a halal-certified pizza restaurant serving delicious, high-quality pizzas and fast food in Pakistan. We use only the freshest ingredients and traditional recipes to bring you authentic flavors that satisfy your cravings.</p>
+                    <p>Our mission is to provide delicious halal food with excellent service at affordable prices. All our chicken and meat is zabiha halal, and we maintain the highest standards of cleanliness and food preparation.</p>
+                    <div class="halal-badge">
+                        <i class="fas fa-check-circle"></i>
+                        <span>100% Halal Certified</span>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591" alt="Fabbies Pizza Restaurant" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials-section">
+        <div class="testimonials-container">
+            <div class="section-title">
+                <h2>What Our Customers Say</h2>
+            </div>
+            <div class="testimonials">
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        The Malai Boti Pizza is absolutely delicious! The chicken is so tender and flavorful. Definitely my favorite pizza in town.
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Ahmed Khan" loading="lazy">
+                        </div>
+                        <div class="author-info">
+                            <h4>Ahmed Khan</h4>
+                            <p>Multan</p>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        Fast delivery and the pizza was still hot when it arrived. The Chicken Tikka pizza has the perfect amount of spice. Highly recommended!
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Fatima Ali" loading="lazy">
+                        </div>
+                        <div class="author-info">
+                            <h4>Fatima Ali</h4>
+                            <p>Multan</p>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        The Family Deal is perfect for our weekend get-togethers. Great value for money and everyone loves the food. The nuggets are especially crispy!
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="https://randomuser.me/api/portraits/men/67.jpg" alt="Usman Malik" loading="lazy">
+                        </div>
+                        <div class="author-info">
+                            <h4>Usman Malik</h4>
+                            <p>Multan</p>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact-section" id="contact">
+        <div class="contact-container">
+            <div class="section-title">
+                <h2>Contact Us</h2>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h3>Our Location</h3>
+                            <p>Jalal Park Street, B Block North Gulgasht Colony, Multan, Pakistan</p>
+                        </div>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h3>Phone Number</h3>
+                            <p>0310-1044444</p>
+                        </div>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h3>Email Address</h3>
+                            <p>fabbiespizza.com@gmail.com</p>
+                            <p>fabbieskitchen@gmail.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h3>Opening Hours</h3>
+                            <p>Monday - Sunday: 12:00 PM - 04:00 AM</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <h3>Send Us a Message</h3>
+                    <form id="contact-form" action="https://formspree.io/f/xvgqyeon" method="POST">
+                        <div class="form-group">
+                            <label for="name">Your Name</label>
+                            <input type="text" name="name" id="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" name="email" id="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <input type="text" name="subject" id="subject" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea name="message" id="message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-about">
+                <div class="footer-logo">
+                    <img src="https://raw.githubusercontent.com/fabbiespizza/fabbies-pizza/main/images/logo.jpg" alt="Fabbies Pizza Logo">
+                </div>
+                <p>Fabbies Pizza is your destination for delicious pizza and fast food in Pakistan. We pride ourselves on using only the freshest ingredients and traditional recipes.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="https://wa.me/923479317516?text=Hello%20Fabbies%20Pizza%2C%20I%27d%20like%20to%20place%20an%20order." class="social-link" target="_blank" rel="noopener" aria-label="WhatsApp">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#menu">Menu</a></li>
+                    <li><a href="#offers">Offers</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-newsletter">
+                <h3>Newsletter</h3>
+                <p>Subscribe to our newsletter to get updates on special offers and discounts.</p>
+                <form class="newsletter-form">
+                    <input type="email" class="newsletter-input" placeholder="Your Email Address" required>
+                    <button type="submit" class="newsletter-btn"><i class="fas fa-paper-plane"></i></button>
+                </form>
+                <h3 style="margin-top: 1.5rem;">Payment Methods</h3>
+                <div class="payment-methods">
+                    <div class="payment-method">
+                        <img src="https://raw.githubusercontent.com/fabbiespizza/fabbies-pizza/main/images/Jazzcash.jpg" alt="JazzCash" loading="lazy">
+                    </div>
+                    <div class="payment-method">
+                        <img src="https://raw.githubusercontent.com/fabbiespizza/fabbies-pizza/main/images/easyP.jpg" alt="EasyPaisa" loading="lazy">
+                    </div>
+                    <div class="payment-method">
+                        <img src="https://raw.githubusercontent.com/fabbiespizza/fabbies-pizza/main/images/VISA.jpg" alt="VISA" loading="lazy">
+                    </div>
+                    <div class="payment-method">
+                        <img src="https://raw.githubusercontent.com/fabbiespizza/fabbies-pizza/main/images/Master.jpg" alt="MasterCard" loading="lazy">
+                    </div>
+                    <div class="payment-method">
+                        <img src="https://raw.githubusercontent.com/fabbiespizza/fabbies-pizza/main/images/Pay.jpg" alt="PayPak" loading="lazy">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Fabbies Pizza. All Rights Reserved. | Designed with <i class="fas fa-heart" style="color: #e74c3c;"></i> in Pakistan</p>
+        </div>
+    </footer>
+
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h3 class="cart-title">Your Order</h3>
+            <button class="close-cart" id="close-cart">&times;</button>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <div style="text-align: center; padding: 2rem; color: #777;">
+                <i class="fas fa-shopping-cart" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                <p>Your cart is empty</p>
+            </div>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-subtotal">
+                <span>Subtotal:</span>
+                <span>Rs. <span id="cart-total">0</span></span>
+            </div>
+            <button class="checkout-btn" id="checkout-btn">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <div class="modal" id="checkout-modal" role="dialog" aria-modal="true" aria-labelledby="checkout-title">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="checkout-title">Checkout</h3>
+                <button class="close-modal" id="close-checkout">&times;</button>
+            </div>
+            <form id="checkout-form">
+                <div class="form-group">
+                    <label for="checkout-name">Full Name</label>
+                    <input type="text" id="checkout-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="checkout-email">Email Address</label>
+                    <input type="email" id="checkout-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="checkout-phone">Phone Number</label>
+                    <input type="tel" id="checkout-phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="checkout-address">Delivery Address</label>
+                    <textarea id="checkout-address" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Payment Method</label>
+                    <div class="payment-methods-list">
+                        <label class="payment-method-option">
+                            <input type="radio" name="payment" value="jazzcash" checked>
+                            <div class="payment-method-icon">
+                                <img src="https://raw.githubusercontent.com/fabbiespizza/fabbies-pizza/main/images/Jazzcash.jpg" alt="JazzCash">
+                            </div>
+                            <div class="payment-method-info">
+                                <h4>JazzCash</h4>
+                                <p>Pay via JazzCash mobile account</p>
+                            </div>
+                        </label>
+                        <label class="payment-method-option">
+                            <input type="radio" name="payment" value="easypaisa">
+                            <div class="payment-method-icon">
+                                <img src="https://raw.githubusercontent.com/fabbiespizza/fabbies-pizza/main/images/easyP.jpg" alt="EasyPaisa">
+                            </div>
+                            <div class="payment-method-info">
+                                <h4>EasyPaisa</h4>
+                                <p>Pay via EasyPaisa mobile account</p>
+                            </div>
+                        </label>
+                        <label class="payment-method-option">
+                            <input type="radio" name="payment" value="card">
+                            <div class="payment-method-icon">
+                                <img src="https://raw.githubusercontent.com/fabbiespizza/fabbies-pizza/main/images/cards.jpg" alt="Credit Card">
+                            </div>
+                            <div class="payment-method-info">
+                                <h4>Credit/Debit Card</h4>
+                                <p>VISA, MasterCard or PayPak</p>
+                            </div>
+                        </label>
+                        <label class="payment-method-option">
+                            <input type="radio" name="payment" value="cod">
+                            <div class="payment-method-icon">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                            <div class="payment-method-info">
+                                <h4>Cash on Delivery</h4>
+                                <p>Pay when you receive your order</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="confirm-btn">Confirm Order</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="confirmation-modal" role="dialog" aria-modal="true" aria-labelledby="confirmation-title">
+        <div class="modal-content">
+            <div class="confirmation-content">
+                <div class="confirmation-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3 class="modal-title" id="confirmation-title">Order Confirmed!</h3>
+                <div class="confirmation-message">
+                    <p>Thank you for your order. Your food will be prepared fresh and delivered to you soon.</p>
+                </div>
+                <div class="confirmation-details">
+                    <p><strong>Order ID:</strong> FB-<span id="order-id">12345</span></p>
+                    <p><strong>Estimated Delivery:</strong> 45-60 minutes</p>
+                    <p><strong>Payment Method:</strong> <span id="payment-method">Cash on Delivery</span></p>
+                </div>
+                <button id="close-confirmation" class="btn btn-primary">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="guest-options-modal" style="display: none;">
+        <div class="modal-content" style="max-width: 400px;">
+            <span class="close-modal" onclick="closeGuestOptions()">&times;</span>
+            <div class="modal-header">
+                <h3 class="modal-title">Continue to Checkout</h3>
+            </div>
+            <div class="modal-body" style="text-align: center; padding: 30px 20px;">
+                <div class="guest-options">
+                    <p style="margin-bottom: 25px; color: #555; font-size: 16px;">
+                        Choose how you'd like to proceed with your order:
+                    </p>
+                    
+                    <button id="guest-checkout-option" class="guest-option-btn" style="background: #666; color: white; width: 100%; padding: 15px; margin-bottom: 15px; border-radius: 8px; border: none; font-size: 16px; cursor: pointer;">
+                        <i class="fas fa-user-clock"></i> Continue as Guest
+                        <p style="font-size: 14px; margin: 5px 0 0; opacity: 0.8;">No account needed</p>
+                    </button>
+                    
+                    <div style="margin: 20px 0; position: relative;">
+                        <hr style="border: none; border-top: 1px solid #ddd;">
+                        <span style="background: white; padding: 0 10px; position: absolute; top: -10px; left: 50%; transform:translateX(-50%); color: #777;">OR</span>
+                    </div>
+                    
+                    <a href="login.html" id="login-checkout-option" class="guest-option-btn" style="background: #1976d2; color: white; width: 100%; padding: 15px; margin-bottom: 10px; border-radius: 8px; border: none; font-size: 16px; cursor: pointer; text-decoration: none; display: inline-block; text-align: center;">
+                        <i class="fas fa-sign-in-alt"></i> Login to Account
+                    </a>
+                    
+                    <a href="signup.html" id="signup-checkout-option" class="guest-option-btn" style="background: #43a047; color: white; width: 100%; padding: 15px; border-radius: 8px; border: none; font-size: 16px; cursor: pointer; text-decoration: none; display: inline-block; text-align: center;">
+                        <i class="fas fa-user-plus"></i> Create New Account
+                    </a>
+                    
+                    <p style="margin-top: 20px; font-size: 13px; color: #777;">
+                        <i class="fas fa-info-circle"></i> As a guest, you can still track your order via email/SMS
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js" defer></script>
+    <script src="script.js" defer></script>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('menu-search-input');
+        const searchDropdown = document.getElementById('search-results');
+        const trendingSection = document.getElementById('trending-section');
+        const resultsList = document.getElementById('results-list');
+        const menuItems = document.querySelectorAll('.menu-item');
+
+        // Close search on ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                searchDropdown.classList.remove('active');
+                searchInput.blur();
+            }
+        });
+
+        // Show dropdown (Trending) on Focus
+        searchInput.addEventListener('focus', function() {
+            searchDropdown.classList.add('active');
+            if (this.value.trim() === "") {
+                trendingSection.style.display = 'block';
+                resultsList.style.display = 'none';
+            }
+        });
+
+        // Hide dropdown on click outside
+        document.addEventListener('click', function(e) {
+            if (!searchInput.contains(e.target) && !searchDropdown.contains(e.target)) {
+                searchDropdown.classList.remove('active');
+            }
+        });
+
+        // Search Logic
+        searchInput.addEventListener('input', function() {
+            const query = this.value.toLowerCase().trim();
+            searchDropdown.classList.add('active');
+
+            if (query === "") {
+                trendingSection.style.display = 'block';
+                resultsList.style.display = 'none';
+                return;
+            }
+
+            trendingSection.style.display = 'none';
+            resultsList.style.display = 'block';
+            resultsList.innerHTML = '';
+
+            let hasResults = false;
+            
+            // Search through menu items
+            menuItems.forEach(item => {
+                const titleElement = item.querySelector('.item-title');
+                if (titleElement) {
+                    const title = titleElement.textContent;
+                    if (title.toLowerCase().includes(query)) {
+                        hasResults = true;
+                        // Determine Category Icon
+                        let icon = 'fa-utensils';
+                        if(title.includes('Pizza')) icon = 'fa-pizza-slice';
+                        else if(title.includes('Burger')) icon = 'fa-hamburger';
+                        else if(title.includes('Pasta')) icon = 'fa-layer-group';
+
+                        const div = document.createElement('div');
+                        div.className = 'suggestion-item';
+                        div.innerHTML = `<i class="fas ${icon}"></i> ${title}`;
+                        div.onclick = function() {
+                            scrollToItem(title);
+                        };
+                        resultsList.appendChild(div);
+                    }
+                }
+            });
+
+            if (!hasResults) {
+                resultsList.innerHTML = '<div style="padding:15px; color:#777; font-size:0.9rem;">No yummy items found...</div>';
+            }
+        });
+        
+        // Mobile Menu Toggle Logic (Ensuring the new button works with old ID)
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const navLinks = document.getElementById('nav-links');
+        
+        if(mobileMenuBtn && navLinks) {
+            mobileMenuBtn.addEventListener('click', function() {
+                if(navLinks.style.display === 'block') {
+                    navLinks.style.display = 'none';
+                } else {
+                    navLinks.style.display = 'block';
+                }
+            });
+        }
+    });
+
+    // Scroll Functionality
+    function scrollToItem(itemName) {
+        const menuItems = document.querySelectorAll('.menu-item');
+        let targetElement = null;
+
+        // Find the item
+        menuItems.forEach(item => {
+            const btn = item.querySelector(`.add-to-cart[data-item="${itemName}"]`);
+            if (btn) {
+                targetElement = item;
+            } else {
+                // Fallback: check title text if button data-item doesn't match perfectly
+                const title = item.querySelector('.item-title');
+                if (title && title.textContent.trim() === itemName) {
+                    targetElement = item;
+                }
+            }
+        });
+
+        if (targetElement) {
+            // Hide dropdown
+            document.getElementById('search-results').classList.remove('active');
+            // Scroll
+            targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            // Highlight
+            targetElement.classList.add('highlight-item');
+            setTimeout(() => {
+                targetElement.classList.remove('highlight-item');
+            }, 1500);
+        } else {
+            // If item not found in current view (maybe it's in offers), scroll to menu top
+            window.location.href = '#menu';
+        }
+    }
+    </script>
+
+    <a
+        href="https://wa.me/923479317516?text=Hello%20Fabbies%20Pizza%2C%20I%27d%20like%20to%20place%20an%20order."
+        class="whatsapp-float"
+        target="_blank"
+        rel="noopener"
+        aria-label="Chat with us on WhatsApp"
+    >
+        <i class="fab fa-whatsapp" aria-hidden="true"></i>
+    </a>
+</body>
+</html>

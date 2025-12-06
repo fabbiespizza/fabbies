@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>My Profile - Fabbies Pizza</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* --- 1. MODERN VARIABLES & RESET --- */
+        :root {
+            --primary: #e74c3c;       /* Vibrant Pizza Red */
+            --primary-dark: #c0392b;
+            --secondary: #2c3e50;     /* Deep Navy/Dark */
+            --accent: #f1c40f;        /* Gold/Cheese */
+            --text-dark: #2d3436;
+            --text-light: #636e72;
+            --white: #ffffff;
+            --bg-light: #f4f6f9;
+            --border: #dfe6e9;
+            --success: #00b894;
+            --danger: #ff7675;
+            
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
+            --shadow-md: 0 8px 16px rgba(0,0,0,0.08);
+            --shadow-lg: 0 15px 30px rgba(0,0,0,0.15);
+            
+            --radius: 12px;
+            --header-height: 70px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent; /* Remove blue highlight on mobile */
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding-top: var(--header-height); /* Prevent content hiding behind fixed header */
+        }
+
+        /* --- 2. OPTIMIZED HEADER & NAV --- */
+        #header {
+            background-color: var(--white);
+            height: var(--header-height);
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            height: 100%;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 45px;
+            width: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--secondary);
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text span {
+            color: var(--primary);
+        }
+
+        /* Desktop Nav */
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .nav-item {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+            position: relative;
+        }
+
+        .nav-item:hover {
+            color: var(--primary);
+        }
+
+        /* Hamburger Button (Enhanced visibility) */
+        .mobile-menu-btn {
+            display: none;
+            background: transparent;
+            border: none;
+            font-size: 1.6rem;
+            color: var(--text-dark); /* Dark color ensures visibility on white */
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        /* --- 3. AUTH & BUTTONS --- */
+        .auth-btn {
+            background: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
+            transition: transform 0.2s, background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .auth-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .auth-account-btn {
+            background: var(--bg-light);
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 50px;
+            color: var(--secondary);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .auth-account-btn:hover {
+            background: var(--border);
+        }
+
+        /* Dropdown Menu */
+        .auth-account-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 10px;
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            width: 200px;
+            overflow: hidden;
+            display: none; /* JS toggles this */
+            border: 1px solid var(--border);
+            animation: slideDown 0.2s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .auth-menu-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 20px;
+            color: var(--text-dark);
+            text-decoration: none;
+            transition: background 0.2s;
+            font-weight: 500;
+            width: 100%;
+            border: none;
+            background: none;
+            text-align: left;
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+
+        .auth-menu-item:hover {
+            background-color: var(--bg-light);
+        }
+
+        .cart-btn {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s;
+        }
+
+        .cart-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .cart-count {
+            background: var(--accent);
+            color: var(--secondary);
+            font-size: 0.8rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-weight: 800;
+        }
+
+        /* --- 4. PROFILE LAYOUT --- */
+        .profile-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-header h1 {
+            font-size: 2rem;
+            color: var(--secondary);
+            border-left: 5px solid var(--primary);
+            padding-left: 15px;
+        }
+
+        .btn-edit-profile {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+        }
+
+        .btn-edit-profile:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Sections */
+        .profile-section {
+            background: white;
+            border-radius: var(--radius);
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+        }
+
+        .profile-section h2 {
+            font-size: 1.3rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+        }
+
+        /* Info Grid */
+        .profile-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .info-item label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .info-item span {
+            display: block;
+            background: var(--bg-light);
+            padding: 14px;
+            border-radius: 8px;
+            color: var(--secondary);
+            font-weight: 600;
+            border: 1px solid transparent;
+        }
+
+        /* --- 5. ORDERS LIST --- */
+        .order-history-list {
+            list-style: none;
+        }
+
+        .order-item {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.2s ease;
+        }
+
+        .order-item:hover {
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed var(--border);
+        }
+
+        .order-number {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--secondary);
+        }
+
+        .order-status {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-preparing { background: #cce5ff; color: #004085; }
+        .status-out_for_delivery { background: #d4edda; color: #155724; }
+        .status-delivered { background: var(--success); color: white; }
+        .status-cancelled { background: var(--danger); color: white; }
+
+        .order-details {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .order-items-summary {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .order-total {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .order-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-reorder, .btn-view-details {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-reorder {
+            background: #1abc9c;
+            color: white;
+        }
+        .btn-reorder:hover { background: #16a085; }
+
+        .btn-view-details {
+            background: var(--bg-light);
+            color: var(--secondary);
+            border: 1px solid var(--border);
+        }
+        .btn-view-details:hover { background: #e0e0e0; }
+
+        /* --- 6. MODALS --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(44, 62, 80, 0.6); /* Backdrop blur feel */
+            backdrop-filter: blur(4px);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            width: 100%;
+            max-width: 500px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes modalPop {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-header {
+            padding: 20px 25px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.4rem;
+            color: var(--secondary);
+            margin: 0;
+        }
+
+        .close-modal {
+            font-size: 1.8rem;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: color 0.2s;
+            line-height: 1;
+        }
+        .close-modal:hover { color: var(--danger); }
+
+        .modal-body { padding: 25px; }
+
+        /* Forms */
+        .form-group { margin-bottom: 20px; }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--secondary);
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border 0.2s;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        .form-group input:disabled { background: var(--bg-light); color: var(--text-light); }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            padding: 0 25px 25px;
+        }
+
+        .btn-save { background: var(--success); color: white; padding: 12px 24px; border:none; border-radius: 6px; font-weight: 600; cursor: pointer; }
+        .btn-save:hover { background: #00b894; transform: translateY(-1px); }
+        .btn-cancel { background: var(--text-light); color: white; padding: 12px 24px; border:none; border-radius: 6px; font-weight: 600; cursor: pointer; }
+
+        /* Messages */
+        .message-box {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            font-weight: 500;
+            text-align: center;
+        }
+        .message-box.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .message-box.error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+
+        /* Order Details Specific */
+        .order-detail-section { margin-bottom: 20px; }
+        .order-detail-section h4 { color: var(--primary); border-bottom: 2px solid var(--bg-light); padding-bottom: 8px; margin-bottom: 12px; }
+        .order-item-detail {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .order-totals div { display: flex; justify-content: space-between; padding: 5px 0; }
+        
+        footer {
+            margin-top: 60px;
+            background: var(--secondary);
+            color: var(--text-light);
+            text-align: center;
+            padding: 30px 20px;
+            font-size: 0.9rem;
+        }
+
+        /* --- 7. RESPONSIVE MEDIA QUERIES (The Fixes) --- */
+
+        /* Tablet (max 992px) */
+        @media (max-width: 992px) {
+            .nav-item { margin: 0 10px; }
+            .profile-header { flex-direction: column; text-align: center; gap: 20px; }
+            .profile-header h1 { border-left: none; padding-left: 0; }
+        }
+
+        /* Mobile (max 768px) - CRITICAL FIXES */
+        @media (max-width: 768px) {
+            .mobile-menu-btn { display: block; }
+            
+            /* The Nav Links Drawer */
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: white; /* Fixes white screen issue */
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+                /* Hidden by default */
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(-20px);
+                transition: all 0.3s ease;
+            }
+
+            .nav-links.active {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+            }
+
+            .nav-item {
+                width: 100%;
+                text-align: center;
+                padding: 15px;
+                border-bottom: 1px solid var(--bg-light);
+                font-size: 1.1rem;
+            }
+
+            .auth-section {
+                width: 100%;
+                justify-content: center;
+                margin-top: 15px;
+            }
+
+            .cart-btn { width: 100%; justify-content: center; margin-top: 10px; }
+
+            /* Fix Profile Mobile Layout */
+            .profile-container { padding: 0 15px; margin-top: 20px; }
+            .profile-section { padding: 20px; }
+            .profile-info-grid { grid-template-columns: 1fr; }
+            
+            .order-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .order-status { align-self: flex-start; }
+            
+            .order-actions { flex-direction: column; }
+            .btn-reorder, .btn-view-details { width: 100%; padding: 14px; }
+
+            /* Fix Modal on Mobile */
+            .modal-content { margin: 10px; width: 95%; max-height: 85vh; }
+            .modal-actions { flex-direction: column-reverse; }
+            .btn-save, .btn-cancel { width: 100%; padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header id="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <img src="https://raw.githubusercontent.com/fabbiespizza/fabbies-pizza/main/images/logo.jpg" alt="Fabbies Pizza Logo">
+                <div class="logo-text">Fabbies<span>Pizza</span></div>
+            </a>
+
+            <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <nav class="nav-links" id="nav-links">
+                <a href="index.html#home" class="nav-item">Home</a>
+                <a href="index.html#menu" class="nav-item">Menu</a>
+                <a href="index.html#offers" class="nav-item">Offers</a>
+                <a href="index.html#about" class="nav-item">About</a>
+                <a href="index.html#contact" class="nav-item">Contact</a>
+
+                <div class="auth-section" id="auth-section">
+                    <div id="auth-not-logged-in" style="display:flex; gap:10px; align-items:center;">
+                        <a id="auth-combined-link" class="auth-btn" href="login.html">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </a>
+                    </div>
+                    
+                    <div id="auth-logged-in" style="display:none; position:relative;">
+                        <button id="auth-account-btn" class="auth-account-btn" aria-haspopup="true">
+                            <i class="fas fa-user-circle" style="font-size: 1.2rem;"></i> 
+                            <span id="auth-user-name">Account</span> 
+                            <i class="fas fa-chevron-down" style="font-size: 0.8rem;"></i>
+                        </button>
+                        <div id="auth-account-menu" class="auth-account-menu">
+                            <a href="profile.html" class="auth-menu-item">
+                                <i class="fas fa-user" style="color: var(--primary);"></i> My Profile
+                            </a>
+                            <button id="profile-logout-btn" class="auth-menu-item" style="color: var(--danger);">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="cart-btn" id="cart-btn">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cart-count">0</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <div class="profile-container">
+        
+        <div class="profile-header">
+            <h1>My Profile</h1>
+            <button class="btn-edit-profile" id="editProfileBtn">
+                <i class="fas fa-edit"></i> Edit Details
+            </button>
+        </div>
+
+        <div class="profile-section">
+            <h2>Personal Information</h2>
+            <div class="profile-info-grid">
+                <div class="info-item">
+                    <label for="profile-name"><i class="fas fa-user"></i> Full Name</label>
+                    <span id="profile-name">Loading...</span>
+                </div>
+                <div class="info-item">
+                    <label for="profile-email"><i class="fas fa-envelope"></i> Email Address</label>
+                    <span id="profile-email">Loading...</span>
+                </div>
+                <div class="info-item">
+                    <label for="profile-phone"><i class="fas fa-phone"></i> Phone Number</label>
+                    <span id="profile-phone">Loading...</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-section">
+            <h2>Order History</h2>
+            <div id="orderHistoryMessage" class="message-box"></div>
+            <ul class="order-history-list" id="orderHistoryList">
+                <li style="text-align: center; padding: 40px; color: var(--text-light);">
+                    <i class="fas fa-pizza-slice fa-spin" style="font-size: 2rem; margin-bottom: 15px; color: var(--primary);"></i>
+                    <p>Fetching your delicious history...</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="modal" id="editProfileModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Profile</h3>
+                <span class="close-modal" id="closeEditProfileModal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="editProfileMessage" class="message-box"></div>
+                <form id="editProfileForm">
+                    <div class="form-group">
+                        <label for="edit-name">Full Name</label>
+                        <input type="text" id="edit-name" name="name" required placeholder="Enter your name">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-email">Email Address</label>
+                        <input type="email" id="edit-email" name="email" disabled style="cursor: not-allowed; opacity: 0.7;">
+                        <small style="color: var(--text-light); font-size: 0.8rem; margin-top: 5px; display:block;">Email cannot be changed.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-phone">Phone Number</label>
+                        <input type="tel" id="edit-phone" name="phone" required placeholder="Enter phone number">
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn-cancel" id="cancelEditProfile">Cancel</button>
+                        <button type="submit" class="btn-save">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="orderDetailsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Order Details</h3>
+                <span class="close-modal" id="closeOrderDetailsModal">&times;</span>
+            </div>
+            <div class="modal-body" id="orderDetailsContent">
+                <div style="text-align: center; padding: 30px;">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 1.5rem;"></i>
+                    <p>Loading details...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2025 Fabbies Pizza. All rights reserved. <br> 
+        Designed for Pizza Lovers.
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Mobile Menu Toggle logic
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const navLinks = document.getElementById('nav-links');
+        
+        if (mobileMenuBtn && navLinks) {
+            mobileMenuBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                navLinks.classList.toggle('active');
+                
+                // Change icon based on state
+                const icon = mobileMenuBtn.querySelector('i');
+                if (navLinks.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!navLinks.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                    navLinks.classList.remove('active');
+                    const icon = mobileMenuBtn.querySelector('i');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+        }
+
+        // --- AUTH & DATA LOGIC (Keep exact functionality) ---
+        const token = localStorage.getItem('authToken');
+        const user = JSON.parse(localStorage.getItem('user') || 'null');
+
+        if (!token || !user) {
+            alert('You need to be logged in to view your profile.');
+            window.location.href = 'index.html';
+            return;
+        }
+
+        function updateProfileHeader() {
+            const user = JSON.parse(localStorage.getItem('user') || 'null');
+            const authNotLoggedIn = document.getElementById('auth-not-logged-in');
+            const authLoggedIn = document.getElementById('auth-logged-in');
+            const authUserName = document.getElementById('auth-user-name');
+            const authAccountBtn = document.getElementById('auth-account-btn');
+            const authAccountMenu = document.getElementById('auth-account-menu');
+            const profileLogoutBtn = document.getElementById('profile-logout-btn');
+
+            if (token && user && user.id) {
+                if (authNotLoggedIn) authNotLoggedIn.style.display = 'none';
+                if (authLoggedIn) authLoggedIn.style.display = 'flex';
+                if (authUserName) authUserName.textContent = user.name || 'Account';
+
+                if (authAccountBtn) {
+                    authAccountBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        if (!authAccountMenu) return;
+                        const isOpen = authAccountMenu.style.display === 'block';
+                        authAccountMenu.style.display = isOpen ? 'none' : 'block';
+                    });
+                }
+
+                if (profileLogoutBtn) {
+                    profileLogoutBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        if (confirm('Are you sure you want to log out?')) {
+                            localStorage.removeItem('authToken');
+                            localStorage.removeItem('user');
+                            window.location.href = 'index.html';
+                        }
+                    });
+                }
+
+                document.addEventListener('click', (e) => {
+                    if (!e.target.closest('#auth-logged-in')) {
+                        if (authAccountMenu) authAccountMenu.style.display = 'none';
+                    }
+                });
+            } else {
+                if (authNotLoggedIn) authNotLoggedIn.style.display = 'flex';
+                if (authLoggedIn) authLoggedIn.style.display = 'none';
+            }
+        }
+        updateProfileHeader();
+
+        const API_BASE_URL = 'http://localhost:5000';
+        const profileNameEl = document.getElementById('profile-name');
+        const profileEmailEl = document.getElementById('profile-email');
+        const profilePhoneEl = document.getElementById('profile-phone');
+        const orderHistoryListEl = document.getElementById('orderHistoryList');
+        const orderHistoryMessageEl = document.getElementById('orderHistoryMessage');
+        const editProfileBtn = document.getElementById('editProfileBtn');
+        const editProfileModal = document.getElementById('editProfileModal');
+        const closeEditProfileModal = document.getElementById('closeEditProfileModal');
+        const cancelEditProfile = document.getElementById('cancelEditProfile');
+        const editProfileForm = document.getElementById('editProfileForm');
+        const editProfileMessageEl = document.getElementById('editProfileMessage');
+        const orderDetailsModal = document.getElementById('orderDetailsModal');
+        const closeOrderDetailsModal = document.getElementById('closeOrderDetailsModal');
+        const orderDetailsContent = document.getElementById('orderDetailsContent');
+
+        async function loadUserProfile() {
+            try {
+                const token = localStorage.getItem('authToken');
+                if (!token) throw new Error('Not authenticated');
+
+                const res = await fetch(`${API_BASE_URL}/profile`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!res.ok) {
+                    if (res.status === 401 || res.status === 403) {
+                        localStorage.removeItem('authToken');
+                        localStorage.removeItem('user');
+                        throw new Error('Session expired. Please log in again.');
+                    }
+                    throw new Error(`Failed to load profile: ${res.status}`);
+                }
+
+                const userData = await res.json();
+                profileNameEl.textContent = userData.name || 'Not available';
+                profileEmailEl.textContent = userData.email || 'Not available';
+                profilePhoneEl.textContent = userData.phone || 'Not provided';
+
+                document.getElementById('edit-name').value = userData.name || '';
+                document.getElementById('edit-email').value = userData.email || '';
+                document.getElementById('edit-phone').value = userData.phone || '';
+
+            } catch (error) {
+                console.error('Error loading profile:', error);
+                profileNameEl.textContent = 'Error loading data';
+                profileEmailEl.textContent = 'Error loading data';
+                profilePhoneEl.textContent = 'Error loading data';
+                editProfileMessageEl.textContent = error.message || 'Failed to load profile';
+                editProfileMessageEl.className = 'message-box error';
+                editProfileMessageEl.style.display = 'block';
+            }
+        }
+
+        async function loadOrderHistory() {
+            orderHistoryListEl.innerHTML = '<li style="text-align: center; padding: 24px; color: #777;"><i class="fas fa-spinner fa-spin" style="font-size: 1.5rem; margin-bottom: 12px;"></i><p>Loading your order history...</p></li>';
+            orderHistoryMessageEl.style.display = 'none';
+
+            try {
+                const token = localStorage.getItem('authToken');
+                if (!token) throw new Error('Not authenticated');
+
+                const res = await fetch(`${API_BASE_URL}/orders/my`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!res.ok) {
+                    if (res.status === 401 || res.status === 403) {
+                        localStorage.removeItem('authToken');
+                        localStorage.removeItem('user');
+                        throw new Error('Session expired. Please log in again.');
+                    }
+                    throw new Error(`Failed to load orders: ${res.status}`);
+                }
+
+                const orders = await res.json();
+                if (!orders || orders.length === 0) {
+                    orderHistoryListEl.innerHTML = '<li class="order-item" style="text-align: center; padding: 24px; color: #777;">You have no past orders.</li>';
+                    return;
+                }
+
+                orders.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+                let ordersHtml = '';
+                orders.forEach(order => {
+                    const orderDate = new Date(order.created_at).toLocaleString();
+                    let statusClass = 'status-pending', statusText = 'Pending';
+                    if (order.status === 'preparing') { statusClass = 'status-preparing'; statusText = 'Preparing'; }
+                    else if (order.status === 'out_for_delivery') { statusClass = 'status-out_for_delivery'; statusText = 'Out for Delivery'; }
+                    else if (order.status === 'delivered') { statusClass = 'status-delivered'; statusText = 'Delivered'; }
+                    else if (order.status === 'cancelled') { statusClass = 'status-cancelled'; statusText = 'Cancelled'; }
+
+                    let itemsSummary = order.items || 'No items details';
+                    if (itemsSummary.length > 50) itemsSummary = itemsSummary.substring(0, 47) + '...';
+
+                    let itemsFull = order.items_full || [];
+                    if (typeof itemsFull === 'string') {
+                        try { itemsFull = JSON.parse(itemsFull); } catch (e) { itemsFull = []; }
+                    }
+
+                    ordersHtml += `
+                        <li class="order-item">
+                            <div class="order-header">
+                                <span class="order-number">Order #${order.order_number}</span>
+                                <span class="order-status ${statusClass}">${statusText}</span>
+                            </div>
+                            <div class="order-details">
+                                <div style="color:#7f8c8d; font-size:0.9rem;">${orderDate}</div>
+                                <div class="order-items-summary"><i class="fas fa-utensils" style="margin-right:5px;"></i> ${itemsSummary}</div>
+                                <div class="order-total">Total: Rs. ${parseFloat(order.total).toFixed(2)}</div>
+                                <div class="order-actions">
+                                    <button class="btn-reorder" data-order-id="${order.order_number}" data-order-items='${JSON.stringify(itemsFull).replace(/'/g, "\\'")}'>
+                                        <i class="fas fa-redo"></i> Reorder
+                                    </button>
+                                    <button class="btn-view-details" data-order-number="${order.order_number}">
+                                        <i class="fas fa-eye"></i> Details
+                                    </button>
+                                </div>
+                            </div>
+                        </li>
+                    `;
+                });
+                orderHistoryListEl.innerHTML = ordersHtml;
+
+                document.querySelectorAll('.btn-reorder').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const orderId = this.getAttribute('data-order-id');
+                        const itemsData = this.getAttribute('data-order-items');
+                        try {
+                            const items = JSON.parse(itemsData);
+                            reorderItems(items, orderId);
+                        } catch (e) {
+                            console.error('Error parsing order items:', e);
+                            alert('Could not reorder items. Please try again.');
+                        }
+                    });
+                });
+
+                document.querySelectorAll('.btn-view-details').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const orderNumber = this.getAttribute('data-order-number');
+                        const orderData = orders.find(o => o.order_number === orderNumber);
+                        if (orderData) openOrderDetailsModal(orderData);
+                        else alert('Could not load order details.');
+                    });
+                });
+
+            } catch (error) {
+                console.error('Error loading orders:', error);
+                orderHistoryListEl.innerHTML = '<li class="order-item" style="text-align: center; padding: 24px; color: #777;">Failed to load order history.</li>';
+            }
+        }
+
+        function reorderItems(items, orderId) {
+            if (!items || !Array.isArray(items) || items.length === 0) {
+                alert('No items found to reorder.');
+                return;
+            }
+            if (!confirm(`Add all items from Order #${orderId} to your cart?`)) return;
+
+            try {
+                const itemsToAdd = items.map(item => ({
+                    name: item.name,
+                    price: item.price,
+                    quantity: item.quantity,
+                    image: item.image_url || ''
+                }));
+                localStorage.setItem('reorderItems', JSON.stringify(itemsToAdd));
+                localStorage.setItem('reorderFromOrderId', orderId);
+                alert(`Items from Order #${orderId} added to cart.`);
+                window.location.href = 'index.html';
+            } catch (e) {
+                console.error('Reorder error:', e);
+                alert('An error occurred while adding items to cart.');
+            }
+        }
+
+        function openOrderDetailsModal(orderData) {
+            if (!orderData) return;
+            orderDetailsModal.style.display = 'flex'; // Flex for centering
+            document.body.style.overflow = 'hidden';
+
+            const orderDate = new Date(orderData.created_at).toLocaleString();
+            let statusClass = 'status-pending', statusText = 'Pending';
+            if (orderData.status === 'preparing') { statusClass = 'status-preparing'; statusText = 'Preparing'; }
+            else if (orderData.status === 'out_for_delivery') { statusClass = 'status-out_for_delivery'; statusText = 'Out for Delivery'; }
+            else if (orderData.status === 'delivered') { statusClass = 'status-delivered'; statusText = 'Delivered'; }
+            else if (orderData.status === 'cancelled') { statusClass = 'status-cancelled'; statusText = 'Cancelled'; }
+
+            let itemsFull = [];
+            try {
+                itemsFull = typeof orderData.items_full === 'string' ? JSON.parse(orderData.items_full) : orderData.items_full;
+                if (!Array.isArray(itemsFull)) itemsFull = [];
+                itemsFull = itemsFull.filter(item => item && item.name);
+            } catch (e) {
+                itemsFull = [];
+            }
+
+            let itemsHtml = '';
+            if (itemsFull && itemsFull.length > 0) {
+                itemsHtml = '<ul class="order-items-list">';
+                itemsFull.forEach(item => {
+                    const itemTotal = (item.price * item.quantity).toFixed(2);
+                    itemsHtml += `
+                        <li class="order-item-detail">
+                            <div class="order-item-info"><strong>${item.name}</strong> <br> <small>x ${item.quantity}</small></div>
+                            <div class="order-item-price">Rs. ${itemTotal}</div>
+                        </li>
+                    `;
+                });
+                itemsHtml += '</ul>';
+            } else {
+                itemsHtml = '<p>No item details available.</p>';
+            }
+
+            let subtotal = itemsFull.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const deliveryFee = 99;
+            const total = parseFloat(orderData.total) || (subtotal + deliveryFee);
+
+            orderDetailsContent.innerHTML = `
+                <div class="order-detail-header" style="border-bottom: 1px solid #eee; padding-bottom:15px; margin-bottom:15px; display:flex; justify-content:space-between;">
+                    <div>
+                        <strong style="font-size:1.1rem; color:var(--secondary);">Order #${orderData.order_number}</strong><br>
+                        <span style="font-size:0.9rem; color:#777;">${orderDate}</span>
+                    </div>
+                    <div><span class="order-status ${statusClass}">${statusText}</span></div>
+                </div>
+                <div class="order-detail-section">
+                    <h4>Items</h4>
+                    ${itemsHtml}
+                </div>
+                <div class="order-detail-section">
+                    <h4>Delivery Address</h4>
+                    <div style="background:#f9f9f9; padding:10px; border-radius:6px; border:1px solid #eee;">
+                        <i class="fas fa-map-marker-alt" style="color:var(--primary);"></i> ${orderData.delivery_address || 'N/A'}
+                    </div>
+                </div>
+                <div class="order-detail-section order-totals">
+                    <div><span>Subtotal:</span> <span>Rs. ${subtotal.toFixed(2)}</span></div>
+                    <div><span>Delivery Fee:</span> <span>Rs. ${deliveryFee.toFixed(2)}</span></div>
+                    <div style="font-size:1.2rem; margin-top:10px; border-top:1px dashed #ccc; padding-top:10px; color:var(--primary);">
+                        <span>Total:</span> <span>Rs. ${total.toFixed(2)}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        function closeOrderDetailsModalFunc() {
+            orderDetailsModal.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+        closeOrderDetailsModal.addEventListener('click', closeOrderDetailsModalFunc);
+        window.addEventListener('click', (e) => {
+            if (e.target === orderDetailsModal) closeOrderDetailsModalFunc();
+        });
+
+        editProfileBtn.addEventListener('click', () => {
+            editProfileModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        });
+
+        function closeEditProfileModalFunc() {
+            editProfileModal.style.display = 'none';
+            document.body.style.overflow = '';
+            editProfileMessageEl.style.display = 'none';
+        }
+        closeEditProfileModal.addEventListener('click', closeEditProfileModalFunc);
+        cancelEditProfile.addEventListener('click', closeEditProfileModalFunc);
+        window.addEventListener('click', (e) => {
+            if (e.target === editProfileModal) closeEditProfileModalFunc();
+        });
+
+        editProfileForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            editProfileMessageEl.style.display = 'none';
+            const data = { name: this.name.value, phone: this.phone.value };
+            const token = localStorage.getItem('authToken');
+
+            try {
+                if (!token) throw new Error('Session expired.');
+                const res = await fetch(`${API_BASE_URL}/profile`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name: data.name, phone: data.phone })
+                });
+                const result = await res.json();
+                if (res.ok) {
+                    editProfileMessageEl.textContent = 'Profile updated successfully!';
+                    editProfileMessageEl.className = 'message-box success';
+                    editProfileMessageEl.style.display = 'block';
+
+                    const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+                    const updatedUser = { ...currentUser, name: data.name, phone: data.phone };
+                    localStorage.setItem('user', JSON.stringify(updatedUser));
+
+                    profileNameEl.textContent = data.name;
+                    profilePhoneEl.textContent = data.phone || 'Not provided';
+                    const authUserName = document.getElementById('auth-user-name');
+                    if (authUserName) authUserName.textContent = data.name;
+                    
+                    setTimeout(closeEditProfileModalFunc, 1500);
+                } else {
+                    throw new Error(result.error || 'Failed to update profile.');
+                }
+            } catch (error) {
+                editProfileMessageEl.textContent = error.message || 'An error occurred.';
+                editProfileMessageEl.className = 'message-box error';
+                editProfileMessageEl.style.display = 'block';
+            }
+        });
+
+        loadUserProfile();
+        loadOrderHistory();
+    });
+    </script>
+</body>
+</html>
